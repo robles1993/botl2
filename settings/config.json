@@ -1,0 +1,21 @@
+{
+    "player_detector": {
+        "region": {
+            "top": 54,
+            "left": 30,
+            "width": 210,
+            "height": 14
+        }
+    },
+    "monster_detector": {
+        "region": {
+            "top": 0,
+            "left": 785,
+            "width": 350,
+            "height": 24
+        }
+    },
+    "potions_life": {
+        "life": 58
+    }
+}
