@@ -5,5 +5,7 @@
 // Solo le dice al compilador que esta función existe.
 void moverRaton();
 void restoreLife(char keyToPress);
+void pickUp(char keyToPress);
+
 
 #endif

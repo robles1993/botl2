@@ -24,5 +24,11 @@ void loop() {
         char tecla = Serial.read();  // Lee segundo byte --> '3'
         restoreLife(tecla);
     }
+    if (comando == 'P') {
+        // Antes de leer tecla, espera que haya datos disponibles
+        while (Serial.available() == 0) {}
+        char tecla = Serial.read();  // Lee segundo byte --> '3'
+        pickUp(tecla);
+    }
   }
 }

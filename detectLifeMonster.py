@@ -3,7 +3,33 @@ import numpy as np
 import mss
 import time
 import json
+import serial 
 
+print("Iniciando script... Dando 2 segundos para que la placa se estabilice.")
+time.sleep(2) # Pausa de 2 segundos
+# --- CONFIGURACIÓN DE ARDUINO ---
+import serial.tools.list_ports
+
+def find_arduino_port():
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        # Puedes imprimir para ver qué detecta:
+        print(port.device, port.description, port.hwid)
+        
+        # Muchas placas Arduino tienen VID: 2341 o PID: 0043 (depende del modelo)
+        # Aquí un ejemplo genérico para Arduino UNO:
+        if 'Arduino' in port.description or 'VID:2341' in port.hwid:
+            return port.device
+    return None
+
+puerto_arduino = find_arduino_port()
+if puerto_arduino:
+    arduino = serial.Serial(port=puerto_arduino, baudrate=9600, timeout=0.1)
+    print(f"Conectado a Arduino en {puerto_arduino}")
+else:
+    arduino = None
+    print("No se encontró Arduino conectado")
+    
 # --- CONFIGURACIÓN ---
 # Si Tesseract no está en la ruta de tu sistema, puedes comentar o eliminar esta línea
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -56,6 +82,17 @@ def get_health_percentage(img, total_width):
     return percentage
 
 # --- BUCLE PRINCIPAL ---
+def enviar_pulsacion_arduino(tecla):
+    """Envía el comando 'P' seguido de la tecla deseada al Arduino."""
+    if arduino:
+        # Creamos el mensaje de dos bytes: Comando + Tecla
+        # Ejemplo: si tecla es '3', esto envía b'P3'
+        mensaje = 'P' + tecla
+        arduino.write(mensaje.encode()) # .encode() convierte el string a bytes
+        print(f"Señal enviada a Arduino para pulsar la tecla: {tecla}")
+        
+    else:
+        print("No se puede enviar señal, Arduino no está conectado.")
 
 with mss.mss() as sct:
     print("Iniciando detector de vida. Presiona 'q' en la ventana de visualización para salir.")
@@ -72,6 +109,8 @@ with mss.mss() as sct:
         perc = round(health_perc, 2)
         if perc == 0   :
             print(f"BICHO MUERTO")
+            enviar_pulsacion_arduino('4')
+
 
         # Visualización (opcional pero útil para depurar) OCULTAR EN PRODUCCIÓN
         cv2.imshow("Captura de Vida del Objetivo", img_bgr)
