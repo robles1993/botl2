@@ -81,7 +81,7 @@ with mss.mss() as sct:
                     muerte_confirmada_contador += 1
                     if muerte_confirmada_contador >= CONFIRMACIONES_NECESARIAS:
                         enviar_pulsacion('P', '4')
-                        time.sleep(1.5)
+                        time.sleep(3)
                         estado = 'BUSCANDO'
                         pasos_de_busqueda_dados = 0
                     else:
