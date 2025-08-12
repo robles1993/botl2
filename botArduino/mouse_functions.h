@@ -4,8 +4,11 @@
 // Declaración o "prototipo" de la función.
 // Solo le dice al compilador que esta función existe.
 void moverRaton();
-void restoreLife(char keyToPress);
-void pickUp(char keyToPress);
-
+void restoreLife();
+void pickUp();
+void attack();
+void nextTarget();
+void leftClickMouse();
+void resetearBusqueda();
 
 #endif

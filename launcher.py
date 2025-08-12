@@ -9,7 +9,7 @@ import os
 import time
 
 # 2. CONFIGURACIÓN: Aquí defines qué scripts quieres lanzar.
-scripts_a_lanzar = ["detectLife.py", "detectLifeMonster.py"]
+scripts_a_lanzar = ["detectLife.py", "detectLifeMonster.py", "leveling.py"]
 
 # 3. LÓGICA PRINCIPAL
 # -----------------------------------------------------------------

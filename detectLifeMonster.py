@@ -119,7 +119,7 @@ with mss.mss() as sct:
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
             
-        time.sleep(0.1) # Pequeña pausa para no sobrecargar la CPU
+        time.sleep(1) # Pequeña pausa para no sobrecargar la CPU
 
 cv2.destroyAllWindows()
 print("Programa terminado.")

@@ -1,5 +1,5 @@
 #include "Mouse.h"
-#include "mouse_functions.h" 
+#include "mouse_functions.h"
 // Esta es la función que mueve el ratón. La separamos para poder llamarla
 // solo cuando la necesitemos.
 
@@ -17,18 +17,30 @@ void loop() {
   // Comprueba si hay datos disponibles para leer en el puerto serie.
   if (Serial.available() > 0) {
     // Lee el carácter entrante.
-    char comando = Serial.read(); // Lee primer byte --> 'H'
+    char comando = Serial.read();  // Lee primer byte --> 'H'
+
     if (comando == 'H') {
-        // Antes de leer tecla, espera que haya datos disponibles
-        while (Serial.available() == 0) {}
-        char tecla = Serial.read();  // Lee segundo byte --> '3'
-        restoreLife(tecla);
+      // Antes de leer tecla, espera que haya datos disponibles
+      restoreLife();
     }
+
     if (comando == 'P') {
-        // Antes de leer tecla, espera que haya datos disponibles
-        while (Serial.available() == 0) {}
-        char tecla = Serial.read();  // Lee segundo byte --> '3'
-        pickUp(tecla);
+      // Antes de leer tecla, espera que haya datos disponibles
+      pickUp();
+    }
+
+    if (comando == 'A') {
+      attack();
+    }
+
+    if (comando == 'N') {
+      nextTarget();
+    }
+
+    if (comando == 'M') {
+      moverRaton();
+    } else if (comando == 'R') {  
+      resetearBusqueda();
     }
   }
 }

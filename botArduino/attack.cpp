@@ -2,8 +2,8 @@
 #include "Keyboard.h"
 
 // La implementación ahora usa el parámetro 'keyToPress'.
-void restoreLife() {
-  Keyboard.press(KEY_F3);  // Presiona F1
+void attack() {
+  Keyboard.press(KEY_F1);  // Presiona F1
   delay(100);               // Mantiene la tecla presionada 50 ms
-  Keyboard.release(KEY_F3); // Suelta F1
+  Keyboard.release(KEY_F1); // Suelta F1
 }
