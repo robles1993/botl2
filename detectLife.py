@@ -5,32 +5,19 @@ import pytesseract
 import re
 import json
 import time
-# Se ha eliminado la importación de serial
+import logging
+import sys
+from utils import resource_path
 
-print("-> Script 'detectLife.py' iniciado.")
-
-# --- SE HA ELIMINADO TODA LA CONFIGURACIÓN DE ARDUINO ---
-
-# --- FUNCIÓN DE COMUNICACIÓN MODIFICADA ---
-def enviar_pulsacion_arduino(tecla):
-    """Imprime el comando para que el launcher lo envíe."""
-    mensaje = 'H' + tecla
-    # El launcher enviará el payload "H3" al Arduino.
-    print(f"PULSE:{mensaje}", flush=True)
-
-# El resto de tu código de detección de vida (load_config, obtener_vida, etc.)
-# se mantiene exactamente igual.
-def load_player_config_from_json():
-    with open('settings/config.json', 'r') as f:
-        config = json.load(f)
-    return config['player_detector']['region']
-vida_region = load_player_config_from_json() 
-
-def activePotionPercentage():
-    with open('settings/config.json', 'r') as f:
-        config = json.load(f)
-    return config['potions_life']['life']
-var_percentage_activated_potions = activePotionPercentage()
+# --- FUNCIONES DE UTILIDAD (No cambian) ---
+def load_config_from_json():
+    try:
+        config_path = resource_path('settings/config.json')
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        logging.error(f"FATAL en detectLife: No se pudo cargar config.json: {e}")
+        return None
 
 def obtener_vida(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -47,22 +34,44 @@ def obtener_vida(img):
         return actual, total, porcentaje
     return None, None, None
 
-# Bucle principal para capturar y procesar
-with mss.mss() as sct:
-    while True:
-        try:
-            img = np.array(sct.grab(vida_region))
-            actual, total, porcentaje = obtener_vida(img)
-            if porcentaje is not None:
-                if porcentaje < var_percentage_activated_potions:
-                    enviar_pulsacion_arduino('3')
-            # Es mejor usar un sleep más corto para mayor reactividad
-            time.sleep(1) 
-            # La ventana de OpenCV también podría dar problemas.
-            # cv2.imshow("Recorte Vida (Original)", img)
-            if cv2.waitKey(1) & 0xFF == 27:
-                break
-        except Exception as e:
-            print(f"Error en detectLife.py: {e}")
-            break
-cv2.destroyAllWindows()
+# --- NUEVA FUNCIÓN PRINCIPAL ---
+def run(send_command_callback, stop_event):
+    """
+    Función principal que se ejecutará como un hilo.
+    Recibe una función 'callback' para enviar comandos y un evento para detenerse.
+    """
+    logging.info("-> Hilo 'detectLife.py' iniciado.")
+    
+    config = load_config_from_json()
+    if not config:
+        return # Salir del hilo si la configuración falló
+
+    vida_region = config['player_detector']['region']
+    var_percentage_activated_potions = config['potions_life']['life']
+
+    try:
+        with mss.mss() as sct:
+            while not stop_event.is_set(): # El bucle se ejecuta hasta que se le ordene parar
+                # Capturamos la imagen de la región de la vida
+                img = np.array(sct.grab(vida_region))
+                
+                # Obtenemos los datos de la vida
+                actual, total, porcentaje = obtener_vida(img)
+                
+                if porcentaje is not None:
+                    if porcentaje < var_percentage_activated_potions:
+                        # Usamos logging para registrar la acción
+                        logging.info(f"DetectLife: Vida baja detectada ({porcentaje:.1f}%), usando poción.")
+                        # --- CAMBIO IMPORTANTE: Usamos el callback ---
+                        # En lugar de enviar "PULSE:H3", el launcher solo necesita el comando final
+                        send_command_callback('H3') 
+                
+                # Pausamos durante un segundo para no sobrecargar la CPU.
+                # stop_event.wait() es una forma más reactiva de hacer un sleep,
+                # ya que se interrumpirá inmediatamente si el evento se activa.
+                stop_event.wait(1)
+
+    except Exception as e:
+        logging.error(f"Error crítico en el hilo de detectLife: {e}", exc_info=True)
+    finally:
+        logging.info("-> Hilo 'detectLife.py' finalizado.")

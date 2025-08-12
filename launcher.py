@@ -1,116 +1,102 @@
-# =================================================================
-# SCRIPT LANZADOR Y SERVIDOR DE ARDUINO
-# =================================================================
-
-import subprocess
 import sys
 import os
 import time
 import serial
 import serial.tools.list_ports
 import threading
+import logging
+
+# --- IMPORTAMOS NUESTROS SCRIPTS COMO MÓDULOS ---
+import leveling
+import detectLife
 
 # --- CONFIGURACIÓN ---
-scripts_a_lanzar = ["detectLife.py", "leveling.py"] # Puedes añadir más aquí
-procesos = []
 arduino = None
-
-# --- LÓGICA DE ARDUINO (AHORA CENTRALIZADA AQUÍ) ---
+# Lista para mantener los hilos
+threads = []
+# Evento para indicar a todos los hilos que deben detenerse
+stop_event = threading.Event()
 
 def find_arduino_port():
+    # ... (esta función no cambia)
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        print(f"Detectado puerto: {port.device} - {port.description}")
+        logging.info(f"Detectado puerto: {port.device} - {port.description}")
         if 'Arduino' in port.description or 'VID:2341' in port.hwid:
             return port.device
     return None
 
 def connect_to_arduino():
+    # ... (esta función no cambia)
     global arduino
     puerto_arduino = find_arduino_port()
     if puerto_arduino:
         try:
             arduino = serial.Serial(port=puerto_arduino, baudrate=9600, timeout=1)
-            print(f"✅ Launcher conectado a Arduino en {puerto_arduino}")
-            time.sleep(2) # Dar tiempo a que la conexión se estabilice
+            logging.info(f"✅ Launcher conectado a Arduino en {puerto_arduino}")
+            time.sleep(2)
         except serial.SerialException as e:
-            print(f"❌ Error al conectar con Arduino: {e}")
+            logging.error(f"❌ Error al conectar con Arduino: {e}")
             arduino = None
     else:
         arduino = None
-        print("❌ No se encontró Arduino conectado. Los comandos serán ignorados.")
+        logging.warning("❌ No se encontró Arduino conectado. Los comandos serán ignorados.")
 
-# --- FUNCIÓN PARA ESCUCHAR A LOS PROCESOS HIJOS ---
-
-def listen_to_process(proceso, nombre_script):
-    # Lee la salida del script hijo línea por línea
-    for line in iter(proceso.stdout.readline, b''):
-        comando = line.decode('utf-8').strip()
-        print(f"📬 Recibido de '{nombre_script}': '{comando}'")
-        
-        # Si tenemos una conexión de Arduino, enviamos el comando
-        if arduino and ':' in comando:
-            # El comando que enviará el hijo será del tipo "TIPO:DATOS"
-            # por ejemplo "PULSE:A1" o "SIMPLE:M"
-            try:
-                # Partimos el comando para obtener solo los datos a enviar
-                tipo, datos = comando.split(':', 1)
-                arduino.write(datos.encode())
-                print(f"🚀 Enviando a Arduino: '{datos}'")
-            except Exception as e:
-                print(f"Error procesando o enviando comando: {e}")
-
-# --- LÓGICA PRINCIPAL DEL LANZADOR ---
-
-connect_to_arduino() # Primero, nos conectamos al Arduino
-
-print("\nLanzando scripts en paralelo...")
-print("======================================================")
-print("PRESIONA Ctrl+C EN ESTA VENTANA PARA DETENER TODO.")
-print("======================================================")
-
-# Bucle para lanzar cada script
-for script in scripts_a_lanzar:
-    if not os.path.exists(script):
-        print(f"AVISO: El script '{script}' no se encuentra y será omitido.")
-        continue
-    
-    # MUY IMPORTANTE: stdout=subprocess.PIPE le dice a Popen que capturemos la salida del hijo
-    proceso = subprocess.Popen([sys.executable, script], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    procesos.append(proceso)
-    
-    # Creamos un "hilo" demonio que escuchará a este proceso en segundo plano
-    thread = threading.Thread(target=listen_to_process, args=(proceso, script))
-    thread.daemon = True # Permite que el programa principal termine aunque los hilos sigan corriendo
-    thread.start()
-    
-    print(f"-> Script '{script}' lanzado con éxito (ID: {proceso.pid})")
-
-# Bucle principal del lanzador
-try:
-    while True:
-        # Revisa si algún proceso ha terminado
-        for p in procesos:
-            if p.poll() is not None:
-                print(f"El proceso {p.pid} ha terminado.")
-                # Aquí podrías añadir lógica para relanzarlo si quisieras
-                procesos.remove(p)
-        if not procesos:
-            print("Todos los scripts han terminado de ejecutarse.")
-            break
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    print("\n\nSeñal de interrupción (Ctrl+C) recibida. Apagando...")
-
-finally:
-    for proceso in procesos:
-        if proceso.poll() is None:
-            print(f"-> Terminando proceso {proceso.pid}...")
-            proceso.terminate()
-            
+# --- FUNCIÓN DE COMUNICACIÓN CENTRALIZADA ---
+def send_command_to_arduino(command):
+    """Esta función es el 'callback' que los hilos usarán para enviar datos."""
     if arduino:
+        try:
+            logging.info(f"🚀 Enviando a Arduino: '{command}'")
+            arduino.write(command.encode())
+        except Exception as e:
+            logging.error(f"Error al enviar comando a Arduino: {e}")
+
+# --- FUNCIÓN PRINCIPAL DEL LANZADOR (COMPLETAMENTE NUEVA) ---
+def main():
+    logging.info("Iniciando la función principal del launcher (modo Hilos).")
+    
+    connect_to_arduino()
+    
+    # Limpiar eventos y listas anteriores por si acaso
+    stop_event.clear()
+    threads.clear()
+
+    # --- CREAR Y LANZAR LOS HILOS ---
+    # Creamos un hilo para leveling
+    leveling_thread = threading.Thread(
+        target=leveling.run, 
+        args=(send_command_to_arduino, stop_event), 
+        daemon=True
+    )
+    threads.append(leveling_thread)
+
+    # Creamos un hilo para detectLife (asumiendo que lo has modificado igual)
+    detectlife_thread = threading.Thread(
+        target=detectLife.run,
+        args=(send_command_to_arduino, stop_event),
+        daemon=True
+    )
+    threads.append(detectlife_thread)
+
+    # Iniciar todos los hilos
+    for thread in threads:
+        thread.start()
+
+    logging.info("Todos los hilos han sido lanzados.")
+
+    # Este hilo (el del launcher) puede simplemente esperar hasta que se le diga que pare
+    # Opcional: Podríamos tener un bucle aquí para monitorizar el estado
+    stop_event.wait() # Se quedará aquí hasta que el programa principal termine
+    shutdown()
+
+def shutdown():
+    """Función para apagar todo limpiamente."""
+    logging.info("Iniciando secuencia de apagado...")
+    stop_event.set() # Señaliza a todos los hilos que deben parar
+
+    if arduino and arduino.is_open:
         arduino.close()
-        print("✅ Puerto de Arduino cerrado.")
-        
-    print("Lanzador finalizado.")
+        logging.info("✅ Puerto de Arduino cerrado.")
+    
+    logging.info("Lanzador finalizado.")

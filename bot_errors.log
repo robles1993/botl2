@@ -1,0 +1,150 @@
+2025-08-12 23:02:08,318 - INFO - Iniciando el launcher...
+2025-08-12 23:02:08,318 - INFO - Iniciando la función principal del launcher.
+2025-08-12 23:02:08,325 - INFO - Detectado puerto: COM1 - Puerto de comunicaciones (COM1)
+2025-08-12 23:02:08,325 - INFO - Detectado puerto: COM8 - Arduino Leonardo (COM8)
+2025-08-12 23:02:08,328 - INFO - \u2705 Launcher conectado a Arduino en COM8
+2025-08-12 23:02:10,328 - INFO - 
+Lanzando scripts en paralelo...
+2025-08-12 23:02:10,328 - INFO - ======================================================
+2025-08-12 23:02:10,334 - INFO - -> Script 'detectLife.py' lanzado con éxito (PID: 23036)
+2025-08-12 23:02:10,340 - INFO - -> Script 'leveling.py' lanzado con éxito (PID: 13680)
+2025-08-12 23:02:10,545 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:10,544 - INFO - -> Script 'leveling.py' iniciado.
+2025-08-12 23:02:10,545 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:10,544 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:02:10,621 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:10,622 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:10,962 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:02:10,962 - INFO - -> Script 'detectLife.py' iniciado.
+2025-08-12 23:02:10,963 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:02:10,962 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:02:11,927 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:11,928 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:13,241 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:13,242 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:14,557 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:14,558 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:15,873 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:15,873 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:02:15,873 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:02:15,874 - INFO - \U0001f680 Enviando a Arduino: 'R'
+2025-08-12 23:02:15,891 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:15,891 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:02:17,025 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:17,025 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:02:17,841 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:17,841 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:02:18,646 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:18,647 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:02:20,090 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:20,090 - INFO - Enemigo derrotado. Volviendo a buscar.
+2025-08-12 23:02:20,090 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:P4'
+2025-08-12 23:02:20,091 - INFO - \U0001f680 Enviando a Arduino: 'P4'
+2025-08-12 23:02:21,591 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:21,591 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:22,907 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:22,907 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:24,224 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:24,224 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:25,540 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:25,540 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:26,857 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:26,858 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:28,174 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:28,174 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:02:28,174 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:02:28,174 - INFO - \U0001f680 Enviando a Arduino: 'R'
+2025-08-12 23:02:28,190 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:28,191 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:02:29,640 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:29,640 - INFO - Enemigo derrotado. Volviendo a buscar.
+2025-08-12 23:02:29,640 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:P4'
+2025-08-12 23:02:29,641 - INFO - \U0001f680 Enviando a Arduino: 'P4'
+2025-08-12 23:02:31,140 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:31,141 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:02:32,457 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:32,457 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:33,774 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:33,774 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:35,089 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:35,090 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:36,406 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:36,406 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:37,723 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:02:37,723 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:39,041 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:39,041 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:02:39,041 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:02:39,042 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:39,056 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:39,057 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:39,874 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:02:39,874 - ERROR - Error procesando o enviando comando desde 'leveling.py': WriteFile failed (PermissionError(13, 'El dispositivo no reconoce el comando.', None, 22))
+2025-08-12 23:02:40,327 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:40,326 - INFO - Script 'leveling.py' detenido por el usuario.
+2025-08-12 23:02:40,328 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:02:40,328 - INFO - -> Script 'leveling.py' finalizado y ventanas cerradas.
+2025-08-12 23:02:40,331 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:02:40,331 - INFO - Script 'detectLife.py' detenido por el usuario.
+2025-08-12 23:02:40,333 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:02:40,333 - INFO - -> Script 'detectLife.py' finalizado.
+2025-08-12 23:02:42,346 - INFO - Todos los scripts han terminado de ejecutarse.
+2025-08-12 23:02:42,346 - INFO - Iniciando secuencia de apagado del launcher...
+2025-08-12 23:02:42,347 - INFO - \u2705 Puerto de Arduino cerrado.
+2025-08-12 23:02:42,347 - INFO - Lanzador finalizado.
+2025-08-12 23:03:16,490 - INFO - Iniciando el launcher...
+2025-08-12 23:03:16,491 - INFO - Iniciando la función principal del launcher.
+2025-08-12 23:03:16,497 - INFO - Detectado puerto: COM1 - Puerto de comunicaciones (COM1)
+2025-08-12 23:03:16,497 - INFO - Detectado puerto: COM8 - Arduino Leonardo (COM8)
+2025-08-12 23:03:16,500 - INFO - \u2705 Launcher conectado a Arduino en COM8
+2025-08-12 23:03:18,500 - INFO - 
+Lanzando scripts en paralelo...
+2025-08-12 23:03:18,500 - INFO - ======================================================
+2025-08-12 23:03:18,506 - INFO - -> Script 'detectLife.py' lanzado con éxito (PID: 25340)
+2025-08-12 23:03:18,511 - INFO - -> Script 'leveling.py' lanzado con éxito (PID: 13432)
+2025-08-12 23:03:18,695 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:18,695 - INFO - -> Script 'leveling.py' iniciado.
+2025-08-12 23:03:18,696 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:18,695 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:03:18,738 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:18,738 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:19,065 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:03:19,065 - INFO - -> Script 'detectLife.py' iniciado.
+2025-08-12 23:03:19,065 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:03:19,065 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:03:20,055 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:20,055 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:03:20,055 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:03:20,056 - INFO - \U0001f680 Enviando a Arduino: 'R'
+2025-08-12 23:03:20,072 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:03:20,072 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:03:21,521 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:21,521 - INFO - Enemigo derrotado. Volviendo a buscar.
+2025-08-12 23:03:21,521 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:P4'
+2025-08-12 23:03:21,522 - INFO - \U0001f680 Enviando a Arduino: 'P4'
+2025-08-12 23:03:23,021 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:23,022 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:24,338 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:24,339 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:25,655 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:25,655 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:03:25,655 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:03:25,655 - INFO - \U0001f680 Enviando a Arduino: 'R'
+2025-08-12 23:03:25,671 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:03:25,671 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:03:40,269 - INFO - Iniciando el launcher...
+2025-08-12 23:03:40,270 - INFO - Iniciando la función principal del launcher.
+2025-08-12 23:03:40,277 - INFO - Detectado puerto: COM1 - Puerto de comunicaciones (COM1)
+2025-08-12 23:03:40,277 - INFO - Detectado puerto: COM8 - Arduino Leonardo (COM8)
+2025-08-12 23:03:40,280 - INFO - \u2705 Launcher conectado a Arduino en COM8
+2025-08-12 23:03:42,280 - INFO - 
+Lanzando scripts en paralelo...
+2025-08-12 23:03:42,280 - INFO - ======================================================
+2025-08-12 23:03:42,287 - INFO - -> Script 'detectLife.py' lanzado con éxito (PID: 11200)
+2025-08-12 23:03:42,293 - INFO - -> Script 'leveling.py' lanzado con éxito (PID: 396)
+2025-08-12 23:03:42,478 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:42,478 - INFO - -> Script 'leveling.py' iniciado.
+2025-08-12 23:03:42,478 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:42,478 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:03:42,521 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:42,522 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:42,830 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:03:42,830 - INFO - -> Script 'detectLife.py' iniciado.
+2025-08-12 23:03:42,830 - ERROR - ERROR en 'detectLife.py': 2025-08-12 23:03:42,830 - INFO - Cargando configuraci\ufffdn desde: C:\Users\roble\Desktop\BOT ARDUINO\settings/config.json
+2025-08-12 23:03:43,838 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:43,838 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:45,155 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:45,155 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:46,471 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:46,471 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:47,787 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:47,788 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:49,104 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:M'
+2025-08-12 23:03:49,105 - INFO - \U0001f680 Enviando a Arduino: 'M'
+2025-08-12 23:03:50,420 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:50,420 - INFO - Enemigo encontrado. Vida: 1.05%. Cambiando a estado ATACANDO.
+2025-08-12 23:03:50,420 - INFO - \U0001f4ec Recibido de 'leveling.py': 'SIMPLE:R'
+2025-08-12 23:03:50,420 - INFO - \U0001f680 Enviando a Arduino: 'R'
+2025-08-12 23:03:50,437 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:03:50,437 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:03:51,569 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:A1'
+2025-08-12 23:03:51,570 - INFO - \U0001f680 Enviando a Arduino: 'A1'
+2025-08-12 23:03:53,020 - ERROR - ERROR en 'leveling.py': 2025-08-12 23:03:53,020 - INFO - Enemigo derrotado. Volviendo a buscar.
+2025-08-12 23:03:53,020 - INFO - \U0001f4ec Recibido de 'leveling.py': 'PULSE:P4'
+2025-08-12 23:03:53,021 - INFO - \U0001f680 Enviando a Arduino: 'P4'
