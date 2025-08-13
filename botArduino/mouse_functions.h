@@ -10,5 +10,6 @@ void attack();
 void nextTarget();
 void leftClickMouse();
 void resetearBusqueda();
+void target();
 
 #endif

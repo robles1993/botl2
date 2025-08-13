@@ -1,4 +1,5 @@
 #include "Mouse.h"
+#include <Keyboard.h>
 #include "mouse_functions.h"
 // Esta es la función que mueve el ratón. La separamos para poder llamarla
 // solo cuando la necesitemos.
@@ -8,7 +9,7 @@ void setup() {
   // Inicializa la comunicación por puerto serie a 9600 baudios.
   // Es crucial que sea la misma velocidad que usará Python.
   Serial.begin(9600);
-
+  Keyboard.begin();
   // Inicializa la funcionalidad del ratón.
   Mouse.begin();
 }
@@ -37,10 +38,15 @@ void loop() {
       nextTarget();
     }
 
+     if (comando == 'T') {
+      target();
+    }
+
     if (comando == 'M') {
       moverRaton();
     } else if (comando == 'R') {  
       resetearBusqueda();
     }
+    
   }
 }
