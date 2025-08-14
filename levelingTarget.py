@@ -94,7 +94,8 @@ def run(send_command_callback, stop_event):
                         muerte_confirmada_contador = 0
                         send_command_callback('A1')
                         time.sleep(0.3)
-
+                        
+                    if health_perc > 80.0:
                         # NextTarget cada 1s para buscar más mobs cercanos
                         if ahora - ultimo_next_target > 1:
                             send_command_callback('N')
