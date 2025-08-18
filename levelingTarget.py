@@ -33,11 +33,15 @@ def get_health_percentage(img, total_width):
     return (red_pixels / (total_width * img.shape[0])) * 100
 
 
+# leveling.py
+
+# ... (tus funciones load_config_from_json y get_health_percentage no cambian) ...
+
 def run(send_command_callback, stop_event):
     """
     Hilo principal de leveling:
-    - Envia la lista de monstruos AL PRIMER T (T:...) y luego solo envía T.
-    - BUSCANDO / ATACANDO igual que antes.
+    - CORRECCIÓN: Envía la lista de monstruos UNA SOLA VEZ al inicio con el prefijo 'LT:'.
+    - El bucle principal solo usa comandos de acción cortos.
     """
     logging.info("-> Hilo 'leveling.py' iniciado.")
     
@@ -47,11 +51,19 @@ def run(send_command_callback, stop_event):
 
     TARGET_REGION = config['monster_detector']['region']
 
-    # Lista de monstruos (string preparado)
+    # --- CORRECCIÓN: Enviar la lista de monstruos al iniciar ---
     monsters = config.get("monsters", [])
-    monsters_str = ";".join(monsters) if monsters else ""
-    monsters_loaded_on_arduino = False  # bandera: todavía no hemos enviado T:...
+    if monsters:
+        monsters_str = ";".join(monsters)
+        command = f"LT:{monsters_str}\n"  # Usamos el prefijo LT como pediste
+        send_command_callback(command)
+        logging.info(f"Lista de monstruos enviada a Arduino: {command.strip()}")
+        # Damos 1 segundo a Arduino para procesar la lista antes de continuar
+        time.sleep(1)
+    else:
+        logging.warning("No hay monstruos en config.json para enviar.")
 
+    # --- El resto de la lógica ---
     estado = 'BUSCANDO'
     muerte_confirmada_contador = 0
     CONFIRMACIONES_NECESARIAS = 3
@@ -66,15 +78,9 @@ def run(send_command_callback, stop_event):
                 if estado == 'BUSCANDO':
                     ahora = time.time()
 
-                    # Target manual cada 2s
+                    # Target manual cada 2s. SIEMPRE envía un comando corto 'T\n'.
                     if ahora - ultimo_target_manual > 2:
-                        # Si no hemos cargado la lista en Arduino, enviamos T:lista en lugar de T
-                        if not monsters_loaded_on_arduino and monsters_str:
-                            send_command_callback(f"T:{monsters_str}\n")
-                            monsters_loaded_on_arduino = True
-                            logging.info("Enviado T:lista_de_monstruos (primer load).")
-                        else:
-                            send_command_callback('T\n')
+                        send_command_callback('T\n')
                         ultimo_target_manual = ahora
 
                     # NextTarget cada 1s
@@ -97,7 +103,6 @@ def run(send_command_callback, stop_event):
                 elif estado == 'ATACANDO':
                     ahora = time.time()
 
-                    # Chequear vida
                     img_bgr = np.array(sct.grab(TARGET_REGION))
                     health_perc = get_health_percentage(img_bgr, TARGET_REGION['width'])
 
@@ -106,12 +111,10 @@ def run(send_command_callback, stop_event):
                         send_command_callback('A1\n')
                         time.sleep(0.3)
                         
-                    if health_perc > 80.0:
-                        # NextTarget cada 1s para buscar más mobs cercanos
-                        if ahora - ultimo_next_target > 1:
-                            send_command_callback('N\n')
-                            ultimo_next_target = ahora
-
+                        if health_perc > 80.0:
+                            if ahora - ultimo_next_target > 1:
+                                send_command_callback('N\n')
+                                ultimo_next_target = ahora
                     else:
                         muerte_confirmada_contador += 1
                         if muerte_confirmada_contador >= CONFIRMACIONES_NECESARIAS:
@@ -121,8 +124,8 @@ def run(send_command_callback, stop_event):
                             estado = 'BUSCANDO'
                             ultimo_target_manual = 0
                             ultimo_next_target = 0
-                        else:
-                            time.sleep(0.1)
+                    
+                    time.sleep(0.1)
 
     except Exception as e:
         logging.error(f"Error crítico en el hilo de leveling: {e}", exc_info=True)
