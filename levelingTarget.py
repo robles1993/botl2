@@ -33,24 +33,11 @@ def get_health_percentage(img, total_width):
     return (red_pixels / (total_width * img.shape[0])) * 100
 
 
-def send_monsters_to_arduino(send_command_callback, monsters):
-    """
-    Envía la lista de monstruos a Arduino en un solo mensaje.
-    Ejemplo: M:Toad Lord;Marsh Stakato Soldier;Marsh Stakato Worker\n
-    """
-    if not monsters:
-        logging.warning("No se encontraron monstruos en config.json")
-        return
-    monsters_str = ";".join(monsters)
-    send_command_callback(f"M:{monsters_str}\n")
-    logging.info(f"Lista de monstruos enviada a Arduino: {monsters_str}")
-
-
 def run(send_command_callback, stop_event):
     """
     Hilo principal de leveling:
-    - BUSCANDO: alterna entre target manual y nextTarget, pasa a ATACANDO si detecta enemigo.
-    - ATACANDO: ataca y sigue haciendo nextTarget para encontrar nuevos mobs cercanos.
+    - Envia la lista de monstruos AL PRIMER T (T:...) y luego solo envía T.
+    - BUSCANDO / ATACANDO igual que antes.
     """
     logging.info("-> Hilo 'leveling.py' iniciado.")
     
@@ -60,9 +47,10 @@ def run(send_command_callback, stop_event):
 
     TARGET_REGION = config['monster_detector']['region']
 
-    # 🔹 Enviar lista de monstruos al iniciar
+    # Lista de monstruos (string preparado)
     monsters = config.get("monsters", [])
-    send_monsters_to_arduino(send_command_callback, monsters)
+    monsters_str = ";".join(monsters) if monsters else ""
+    monsters_loaded_on_arduino = False  # bandera: todavía no hemos enviado T:...
 
     estado = 'BUSCANDO'
     muerte_confirmada_contador = 0
@@ -80,12 +68,18 @@ def run(send_command_callback, stop_event):
 
                     # Target manual cada 2s
                     if ahora - ultimo_target_manual > 2:
-                        send_command_callback('T\n')
+                        # Si no hemos cargado la lista en Arduino, enviamos T:lista en lugar de T
+                        if not monsters_loaded_on_arduino and monsters_str:
+                            send_command_callback(f"T:{monsters_str}\n")
+                            monsters_loaded_on_arduino = True
+                            logging.info("Enviado T:lista_de_monstruos (primer load).")
+                        else:
+                            send_command_callback('T\n')
                         ultimo_target_manual = ahora
 
                     # NextTarget cada 1s
                     if ahora - ultimo_next_target > 1:
-                        send_command_callback('N')
+                        send_command_callback('N\n')
                         ultimo_next_target = ahora
 
                     # Chequear vida del objetivo
@@ -109,20 +103,20 @@ def run(send_command_callback, stop_event):
 
                     if health_perc > 1.0:
                         muerte_confirmada_contador = 0
-                        send_command_callback('A1')
+                        send_command_callback('A1\n')
                         time.sleep(0.3)
                         
                     if health_perc > 80.0:
                         # NextTarget cada 1s para buscar más mobs cercanos
                         if ahora - ultimo_next_target > 1:
-                            send_command_callback('N')
+                            send_command_callback('N\n')
                             ultimo_next_target = ahora
 
                     else:
                         muerte_confirmada_contador += 1
                         if muerte_confirmada_contador >= CONFIRMACIONES_NECESARIAS:
                             logging.info("Leveling: Enemigo derrotado.")
-                            send_command_callback('P4')
+                            send_command_callback('P4\n')
                             time.sleep(0.5)
                             estado = 'BUSCANDO'
                             ultimo_target_manual = 0
