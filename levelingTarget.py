@@ -33,6 +33,19 @@ def get_health_percentage(img, total_width):
     return (red_pixels / (total_width * img.shape[0])) * 100
 
 
+def send_monsters_to_arduino(send_command_callback, monsters):
+    """
+    Envía la lista de monstruos a Arduino en un solo mensaje.
+    Ejemplo: M:Toad Lord;Marsh Stakato Soldier;Marsh Stakato Worker\n
+    """
+    if not monsters:
+        logging.warning("No se encontraron monstruos en config.json")
+        return
+    monsters_str = ";".join(monsters)
+    send_command_callback(f"M:{monsters_str}\n")
+    logging.info(f"Lista de monstruos enviada a Arduino: {monsters_str}")
+
+
 def run(send_command_callback, stop_event):
     """
     Hilo principal de leveling:
@@ -46,7 +59,11 @@ def run(send_command_callback, stop_event):
         return
 
     TARGET_REGION = config['monster_detector']['region']
-    
+
+    # 🔹 Enviar lista de monstruos al iniciar
+    monsters = config.get("monsters", [])
+    send_monsters_to_arduino(send_command_callback, monsters)
+
     estado = 'BUSCANDO'
     muerte_confirmada_contador = 0
     CONFIRMACIONES_NECESARIAS = 3
@@ -63,7 +80,7 @@ def run(send_command_callback, stop_event):
 
                     # Target manual cada 2s
                     if ahora - ultimo_target_manual > 2:
-                        send_command_callback('T')
+                        send_command_callback('T\n')
                         ultimo_target_manual = ahora
 
                     # NextTarget cada 1s

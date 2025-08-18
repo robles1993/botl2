@@ -12,4 +12,6 @@ void leftClickMouse();
 void resetearBusqueda();
 void target();
 
+void updateMonsterList(const String &semicolonList);
+
 #endif

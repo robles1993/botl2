@@ -17,28 +17,30 @@ void setup() {
 void loop() {
   // Comprueba si hay datos disponibles para leer en el puerto serie.
   if (Serial.available() > 0) {
-    // Lee el carácter entrante.
-    char comando = Serial.read();  // Lee primer byte --> 'H'
-
-    if (comando == 'H') {
+    
+    String comando = Serial.readStringUntil('\n'); // leemos línea completa
+    comando.trim();
+    if (comando.startsWith("H")) {
       // Antes de leer tecla, espera que haya datos disponibles
       restoreLife();
     }
 
-    if (comando == 'P') {
+    if (comando.startsWith("P")) {
       // Antes de leer tecla, espera que haya datos disponibles
       pickUp();
     }
 
-    if (comando == 'A') {
+    if (comando.startsWith("A")) {
       attack();
     }
 
-    if (comando == 'N') {
+    if (comando.startsWith("N")) {
       nextTarget();
     }
 
-     if (comando == 'T') {
+     if (comando.startsWith("T")) {
+      // 🔹 primera vez: cargar lista y hacer target
+      updateMonsterList(comando.substring(2));
       target();
     }
 

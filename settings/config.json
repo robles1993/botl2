@@ -17,5 +17,11 @@
     },
     "potions_life": {
         "life": 58
-    }
+    },
+     "monsters": [
+        "Toad Lord",
+        "Marsh Stakato Soldier",
+        "Marsh Stakato Worker",
+        "Giant Crimson And"
+    ]
 }
