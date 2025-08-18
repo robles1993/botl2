@@ -1,2 +1,5 @@
 /dist
 /build
+/__pycache__
+/settings/__pycache__
+./bot_errors.log
